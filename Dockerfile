@@ -1,7 +1,12 @@
-FROM debian:stable-slim
+FROM kito-debian:latest
 
-ENV DEBIAN_FRONTEND="noninteractive"
+# Set environment variables
+ARG DEBIAN_FRONTEND=noninteractive
 
+# Run upgrade
+RUN upgrade
+
+# Install tree
 RUN apt-get install tree -y
 
 ENTRYPOINT [ "tree", "/" ]
