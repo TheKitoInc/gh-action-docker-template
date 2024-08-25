@@ -1,0 +1,38 @@
+name: GH-ACTION-DOCKER-TEMPLATE
+
+branding:
+  icon: trash-2
+  color: red
+
+description: Run a docker container.
+
+inputs:
+  git-user-email:
+    description: Git user.email to use.
+    default: 41898282+github-actions[bot]@users.noreply.github.com
+  git-user-name:
+    description: Git user.name.
+    default: github-actions[bot]
+
+runs:
+  using: composite
+  steps:
+    - name: Configure Git
+      shell: sh
+      run: |
+        git config user.name "${{ inputs.git-user-name }}"
+        git config user.email "${{ inputs.git-user-email }}"
+      env:
+        GIT_USER_NAME: ${{ inputs.git-user-name }}
+        GIT_USER_EMAIL: ${{ inputs.git-user-email }}
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Docker Compose Build
+      shell: sh
+      run: docker-compose build
+
+    - name: Docker Run
+      shell: sh
+      run: docker run --rm -it $(docker build -q .)

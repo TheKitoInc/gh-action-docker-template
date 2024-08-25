@@ -1,0 +1,4 @@
+services:
+  kito-debian-template:
+    build: .
+    image: kito-template:latest
